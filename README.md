@@ -1,5 +1,7 @@
 # ActsAsDagWithParanoia
 
+**acts_as_dag_with_paranoia** is a **ruby on rails gem** that combines the gems [acts-as-dag](https://github.com/resgraph/acts-as-dag) and [paranoia](https://github.com/radar/paranoia) to order model instances in a polymorphic directed acyclic graph and to be able to retrieve connections deleted in the past.
+
 TODO: Write a gem description
 
 ## Installation
