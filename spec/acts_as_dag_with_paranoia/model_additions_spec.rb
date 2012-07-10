@@ -1,54 +1,82 @@
 
 require 'spec_helper'
 
+require 'acts-as-dag'
+
 describe "ActsAsDagWithParanoia::ModelAdditions" do
 
   with_model :User do
     table do |t|
       t.string :name
+    end
+    model do
+      has_dag_links link_class_name: "DagLink"
+    end
+  end
+
+#  with_model :Group do
+#    table do |t|
+#      t.string :name
+#      t.timestamps
+#    end
+#    model do
+#    end
+#  end
+#
+  with_model :DagLink do
+    table do |t|
+      t.integer :ancestor_id
+      t.string  :ancestor_type
+      t.integer :descendant_id
+      t.string  :descendant_type
+      t.boolean :direct
+      t.integer :count
+      t.datetime :deleted_at
       t.timestamps
     end
     model do
-      attr_accessible :name
-      def set_name_example
-        self.name = "Max Mustermann"
-      end
     end
   end
 
-  it "should create the correct example name" do
-
-    user = User.create( name: "John Doe" )
-    user.set_name_example
-
-    user.name.should eql( "Max Mustermann" )
-
-  end
-
-
-
-
-
-#  def reset_database
-#    User.delete_all
+#  with_model :User do
+#    model do
+#      has_dag_links link_class_name: "DagLink", ancestor_class_names: %w(Group)
+#    end
+#  end
+#
+#  with_model :Group do
+#    model do
+#      has_dag_links link_class_name: "DagLink", ancestor_class_names: %w(Group), descendant_class_names: %w(Group User)
+#    end
+#  end
+#
+#  with_model :DagLink do
+#    model do
+#      acts_as_dag_link polymorphic: true
+#    end
+#  end
+#
+#
+  def reset_database
+    User.delete_all
 #    Group.delete_all
 #    DagLink.unscoped.delete_all
-#  end
+  end
 
-#  def create_basic_entries
-#    @user = User.create( name: "John Doe" )
+  def create_basic_entries
+    @user = User.create( name: "John Doe" )
 #    @parent_group = Group.create( name: "Parent Group" )
 #    @sub_group = Group.create( name: "Sub Group of the Parent Group" )
 #    @other_group = Group.create( name: "Yet Another Group" )
-#  end
-#
-#  before( :each ) do
-#    reset_database
-#    create_basic_entries
-#  end
-#
-#  it "should work to create the basic database entries" do
-#  end
+  end
+
+  before( :each ) do
+    reset_database
+    create_basic_entries
+  end
+
+  it "should work to create the basic database entries" do
+  end
 #
 #  it "should work to connect the groups" do
 #    @parent_group.child_groups << @sub_group
