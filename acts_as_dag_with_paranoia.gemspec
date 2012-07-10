@@ -17,6 +17,7 @@ Gem::Specification.new do |gem|
   gem.version       = ActsAsDagWithParanoia::VERSION
 
   gem.add_dependency "rails", ">= 3.2"
+  gem.add_dependency "acts-as-dag"
 
   gem.add_development_dependency "rake"
   gem.add_development_dependency "bundler"
@@ -30,7 +31,7 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency 'execjs'
   gem.add_development_dependency 'therubyracer'
 
-  gem.add_development_dependency 'with_model'
+  gem.add_development_dependency 'sqlite3'
 
 end
 

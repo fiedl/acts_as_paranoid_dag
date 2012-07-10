@@ -1,43 +1,7 @@
 
 require 'spec_helper'
 
-describe ActsAsDagWithParanoia::ModelAdditions::DagLink do
-
-  with_model :User do
-    table do |t|
-      t.string :name
-      t.timestamps
-    end
-    model do
-      has_dag_links link_class_name: "DagLink", ancestor_class_names: %w(Group)
-    end
-  end
-  
-  with_model :Group do
-    table do |t|
-      t.string :name
-      t.timestamps
-    end
-    model do
-      has_dag_links link_class_name: "DagLink", ancestor_class_names: %w(Group)
-    end
-  end
-
-  with_model :DagLink do
-    table do |t|
-      t.integer :ancestor_id
-      t.string  :ancestor_type
-      t.integer :descendant_id
-      t.string  :descendant_type
-      t.boolean :direct
-      t.integer :count
-      t.datetime :deleted_at
-      t.timestamps
-    end
-    model do
-      acts_as_dag_link_with_paranoia polymorphic: true
-    end
-  end
+describe "ActsAsDagWithParanoia::ModelAdditions" do
 
   def reset_database
     User.delete_all
