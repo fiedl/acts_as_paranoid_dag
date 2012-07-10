@@ -3,11 +3,37 @@ require 'spec_helper'
 
 describe "ActsAsDagWithParanoia::ModelAdditions" do
 
-  def reset_database
-    User.delete_all
-    Group.delete_all
-    DagLink.unscoped.delete_all
+  with_model :User do
+    table do |t|
+      t.string :name
+      t.timestamps
+    end
+    model do
+      attr_accessible :name
+      def set_name_example
+        self.name = "Max Mustermann"
+      end
+    end
   end
+
+  it "should create the correct example name" do
+
+    user = User.create( name: "John Doe" )
+    user.set_name_example
+
+    user.name.should eql( "Max Mustermann" )
+
+  end
+
+
+
+
+
+#  def reset_database
+#    User.delete_all
+#    Group.delete_all
+#    DagLink.unscoped.delete_all
+#  end
 
 #  def create_basic_entries
 #    @user = User.create( name: "John Doe" )
