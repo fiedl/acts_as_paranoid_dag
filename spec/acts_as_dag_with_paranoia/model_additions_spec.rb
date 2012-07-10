@@ -5,14 +5,14 @@ require 'acts-as-dag'
 
 describe "ActsAsDagWithParanoia::ModelAdditions" do
 
-  with_model :User do
-    table do |t|
-      t.string :name
-    end
-    model do
-      has_dag_links link_class_name: "DagLink"
-    end
-  end
+#  with_model :User do
+#    table do |t|
+#      t.string :name
+#    end
+#    model do
+#      has_dag_links link_class_name: "DagLink"
+#    end
+#  end
 
 #  with_model :Group do
 #    table do |t|
@@ -23,20 +23,20 @@ describe "ActsAsDagWithParanoia::ModelAdditions" do
 #    end
 #  end
 #
-  with_model :DagLink do
-    table do |t|
-      t.integer :ancestor_id
-      t.string  :ancestor_type
-      t.integer :descendant_id
-      t.string  :descendant_type
-      t.boolean :direct
-      t.integer :count
-      t.datetime :deleted_at
-      t.timestamps
-    end
-    model do
-    end
-  end
+#  with_model :DagLink do
+#    table do |t|
+#      t.integer :ancestor_id
+#      t.string  :ancestor_type
+#      t.integer :descendant_id
+#      t.string  :descendant_type
+#      t.boolean :direct
+#      t.integer :count
+#      t.datetime :deleted_at
+#      t.timestamps
+#    end
+#    model do
+#    end
+#  end
 
 #  with_model :User do
 #    model do
@@ -59,15 +59,15 @@ describe "ActsAsDagWithParanoia::ModelAdditions" do
 #
   def reset_database
     User.delete_all
-#    Group.delete_all
+    Group.delete_all
 #    DagLink.unscoped.delete_all
   end
 
   def create_basic_entries
     @user = User.create( name: "John Doe" )
-#    @parent_group = Group.create( name: "Parent Group" )
-#    @sub_group = Group.create( name: "Sub Group of the Parent Group" )
-#    @other_group = Group.create( name: "Yet Another Group" )
+    @parent_group = Group.create( name: "Parent Group" )
+    @sub_group = Group.create( name: "Sub Group of the Parent Group" )
+    @other_group = Group.create( name: "Yet Another Group" )
   end
 
   before( :each ) do
