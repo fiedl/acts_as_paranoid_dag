@@ -1,6 +1,6 @@
 
 
-require 'acts_as_dag_with_paranoia'
+require 'acts_as_paranoid_dag'
 
 # This is the required database structure.
 ActiveRecord::Schema.define( :version => 1 ) do
@@ -29,7 +29,7 @@ end
 
 # This is how to include the functionality in the models.
 class DagLink < ActiveRecord::Base
-  acts_as_dag_links polymorphic: true, paranoia: true
+  acts_as_dag_links polymorphic: true, paranoid: true
 end
 
 class User < ActiveRecord::Base

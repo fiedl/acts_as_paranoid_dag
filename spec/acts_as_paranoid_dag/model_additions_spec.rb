@@ -2,16 +2,14 @@
 require 'spec_helper'
 
 require 'acts-as-dag'
-require 'acts_as_dag_with_paranoia'
-#require 'paranoia'
 require 'rails3_acts_as_paranoid'
+require 'acts_as_paranoid_dag'
 
-describe ActsAsDagWithParanoia::ModelAdditions do
+describe ActsAsParanoidDag::ModelAdditions do
 
   def reset_database
     User.delete_all
     Group.delete_all
-#    DagLink.unscoped.delete_all
     DagLink.delete_all!
   end
 
@@ -60,7 +58,7 @@ describe ActsAsDagWithParanoia::ModelAdditions do
 
   end
 
-  describe "using the functionality using paranoia, it" do
+  describe "using the functionality of acts_as_paranoid, it" do
     
     it "should work to retrieve deleted connections" do
       @sub_group.child_users << @user
