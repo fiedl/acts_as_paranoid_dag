@@ -1,5 +1,6 @@
 
-require 'paranoia'
+#require 'paranoia'
+require 'rails3_acts_as_paranoid'
 
 # This is a temporary fix for the paranoia gem: Currently, the gem conflicts with
 # presence validations of ActiveRecord. This fix is a temporary solution, until the
@@ -60,28 +61,39 @@ module ActsAsDagWithParanoia
         include DagLinkInstanceMethods
 
         scope :now, where( "#{table_name}.deleted_at IS NULL" )
+#        scope :in_the_past, only_deleted
+#        scope :now_and_in_the_past, with_deleted
 
-        def scoped_without_deleted_at
-          where_values_hash = self.scoped.where_values_hash
-          where_values_hash.delete( :deleted_at )
-          unscoped.where( where_values_hash ) # unscoped() removes the default_scope.
+        def now_and_in_the_past
+          without_paranoid_default_scope
         end
 
-        def now_and_in_the_past  # FAILS
-          #scoped_without_deleted_at
-          where_values_hash = self.scoped.where_values_hash
-          where_values_hash.delete( :deleted_at )
-          unscoped do # unscoped() removes the default_scope.
-            where( where_values_hash ) 
-          end
+        def in_the_past
+          without_paranoid_default_scope.only_deleted
         end
 
-        def in_the_past # FAILS
-          scoped_without_deleted_at.where( "#{table_name}.deleted_at < ?", Time.now )
-        end
-
-        # THE FAILING scopes somehow continuously include the default_scope on evaluation.
-        # Maybe, try redefining the default_scope in the now_and_in_the_past method(), temporarily.
+#
+#        def scoped_without_deleted_at
+#          where_values_hash = self.scoped.where_values_hash
+#          where_values_hash.delete( :deleted_at )
+#          unscoped.where( where_values_hash ) # unscoped() removes the default_scope.
+#        end
+#
+#        def now_and_in_the_past  # FAILS
+#          #scoped_without_deleted_at
+#          where_values_hash = self.scoped.where_values_hash
+#          where_values_hash.delete( :deleted_at )
+#          unscoped do # unscoped() removes the default_scope.
+#            where( where_values_hash ) 
+#          end
+#        end
+#
+#        def in_the_past # FAILS
+#          scoped_without_deleted_at.where( "#{table_name}.deleted_at < ?", Time.now )
+#        end
+#
+#        # THE FAILING scopes somehow continuously include the default_scope on evaluation.
+#        # Maybe, try redefining the default_scope in the now_and_in_the_past method(), temporarily.
 
       end
       
