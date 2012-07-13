@@ -47,6 +47,26 @@ module ActsAsParanoidDag
     module DagLinkInstanceMethods
       # here the new instance methods for the DagLink model.
     end
+
+
+#    def has_dag_links( params )
+#      
+#      paranoid = params[ :paranoid ]
+#      params.delete( :paranoid )
+#
+#      dag_link_class_name = params[ :link_class_name ]
+#      dag_link_table_name = dag_link_class_name.constantize.table_name
+#
+#      super params
+#
+#      if paranoid
+#        
+#        scope :now, where( "#{dag_link_table_name}.deleted_at IS NULL" )
+#
+#      end
+#      
+#    end
+
   end
 end
 
