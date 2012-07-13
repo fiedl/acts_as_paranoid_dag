@@ -1,11 +1,7 @@
 
 require 'spec_helper'
 
-require 'acts-as-dag'
-require 'rails3_acts_as_paranoid'
-require 'acts_as_paranoid_dag'
-
-describe ActsAsParanoidDag::ModelAdditions do
+describe ActsAsParanoidDag do
 
   def reset_database
     User.delete_all
@@ -15,8 +11,8 @@ describe ActsAsParanoidDag::ModelAdditions do
 
   def create_basic_entries
     @user = User.create( name: "John Doe" )
-    @parent_group = Group.create( name: "Parent Group" )
-    @sub_group = Group.create( name: "Sub Group of the Parent Group" )
+    @group = Group.create( name: "Some Group" )
+    @sub_group = Group.create( name: "Sub Group" )
     @other_group = Group.create( name: "Yet Another Group" )
   end
 
@@ -25,29 +21,28 @@ describe ActsAsParanoidDag::ModelAdditions do
     create_basic_entries
   end
 
+  describe "standard ActsAsDag" do
 
-  describe "preserving the standard functionality of acts-as-dag, it" do
-
-    it "should work to create the basic database entries" do
+    it "should allow to create the basic database entries" do
     end
     
-    it "should work to connect the groups" do
-      @parent_group.child_groups << @sub_group
-      @parent_group.children.include?( @sub_group ).should be_true
+    it "should allow to connect the groups" do
+      @group.child_groups << @sub_group
+      @group.children.include?( @sub_group ).should be_true
     end
     
-    it "should work to connect a user to a group" do
+    it "should allow to connect a user to a group" do
       @sub_group.child_users << @user
       @sub_group.children.include?( @user ).should be_true
     end
     
     it "should implicitly connect also the parent group to the user" do    
-      @parent_group.child_groups << @sub_group
+      @group.child_groups << @sub_group
       @sub_group.child_users << @user
-      @parent_group.descendants.include?( @user ).should be_true
+      @group.descendants.include?( @user ).should be_true
     end
     
-    it "should work to delete a connection" do
+    it "should allow to delete a connection" do
       @sub_group.child_users << @user
       @sub_group.children.include?( @user ).should be_true
       link = @user.links_as_child.first
@@ -58,9 +53,9 @@ describe ActsAsParanoidDag::ModelAdditions do
 
   end
 
-  describe "using the functionality of acts_as_paranoid, it" do
-    
-    it "should work to retrieve deleted connections" do
+  describe ActsAsParanoidDag::ModelAdditions do
+
+    it "should allow to retrieve deleted connections" do
       @sub_group.child_users << @user
       link = @user.links_as_child.first
       link.destroy
@@ -72,7 +67,7 @@ describe ActsAsParanoidDag::ModelAdditions do
       @user.links_as_child.with_deleted.count.should eq( 1 )
     end
 
-    it "should still work to create a new link after deleting another" do
+    it "should still allow to create a new link after deleting another" do
       # This is to make sure that the deleting process does not compromise the 
       # link database.
       
@@ -80,11 +75,11 @@ describe ActsAsParanoidDag::ModelAdditions do
       link = @user.links_as_child.first
       link.destroy
       
-      @parent_group.child_groups << @sub_group
-      @parent_group.children.include?( @sub_group ).should be_true
+      @group.child_groups << @sub_group
+      @group.children.include?( @sub_group ).should be_true
     end
 
-    it "should still work to recreate a link after deleting it" do
+    it "should still allow to recreate a link after deleting it" do
       @sub_group.child_users << @user
       link = @user.links_as_child.first
       link.destroy
@@ -93,7 +88,7 @@ describe ActsAsParanoidDag::ModelAdditions do
       @sub_group.children.include?( @user ).should be_true
     end
 
-    it "should be possible to delete and recreate a link twice" do
+    it "should allow to delete and recreate a link twice" do
       @sub_group.child_users << @user
       2.times do
         link = @user.links_as_child.first
@@ -110,7 +105,7 @@ describe ActsAsParanoidDag::ModelAdditions do
   describe "additional access methods" do
 
     def create_links_for_one_user_and_two_groups_and_destroy_one
-      @parent_group.child_users << @user
+      @group.child_users << @user
       @user.links_as_child.first.destroy 
       @other_group.child_users << @user
     end
@@ -133,7 +128,7 @@ describe ActsAsParanoidDag::ModelAdditions do
       create_links_for_one_user_and_two_groups_and_destroy_one
 
       @user.links_as_child.in_the_past.count.should == 1
-      @user.links_as_child.in_the_past.first.ancestor.should == @parent_group
+      @user.links_as_child.in_the_past.first.ancestor.should == @group
     end
 
     it "should have present links as default scope" do

@@ -10,6 +10,9 @@ require 'rspec/rails'
 require 'rspec/autorun'
 
 require 'acts-as-dag'
+require 'rails3_acts_as_paranoid'
+require 'acts_as_paranoid_dag'
+
 
 RSpec.configure do |config|
 end
