@@ -143,6 +143,16 @@ describe ActsAsParanoidDag do
         @user.links_as_child.should == @user.links_as_child.now
       end
 
+      it "should provide a method to select links at a certain time" do
+        @group.child_users << @user
+        sleep 1.5
+        @user.links_as_child.now.count.should == 1
+        @user.links_as_child.at_time( 30.minutes.ago ).count.should == 0
+        @user.links_as_child.at_time( Time.current + 30.minutes ).count.should == 1
+        @user.links_as_child.first.destroy
+        @user.links_as_child.at_time( Time.current + 30.minutes ).count.should == 0
+      end
+
     end
 
 #    describe "for the Model that has the dag links" do

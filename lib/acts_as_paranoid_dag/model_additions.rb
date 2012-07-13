@@ -40,6 +40,13 @@ module ActsAsParanoidDag
           without_paranoid_default_scope.only_deleted
         end
 
+        def at_time( time )
+          links = without_paranoid_default_scope
+            .where( "created_at <= ?", time )
+          links = links.where( :deleted_at => nil ) + links.where( "deleted_at >= ?", time )
+          links
+        end
+
       end
       
     end
