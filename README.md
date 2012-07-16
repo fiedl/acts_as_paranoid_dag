@@ -1,4 +1,4 @@
-# ActsAsParanoidDag
+# ActsAsParanoidDag  [![Build Status](https://secure.travis-ci.org/fiedl/acts_as_paranoid_dag.png?branch=master)](http://travis-ci.org/fiedl/acts_as_paranoid_dag)
 
 **acts_as_paranoid_dag** is a **ruby on rails gem** that combines the gems [acts-as-dag](https://github.com/resgraph/acts-as-dag) and [rails3_acts_as_paranoid](https://github.com/goncalossilva/rails3_acts_as_paranoid) to order model instances in a polymorphic directed acyclic graph and to be able to retrieve connections deleted in the past.
 
