@@ -19,7 +19,14 @@ Or install it yourself as:
 
     $ gem install acts_as_paranoid_dag
 	
-## Database
+## Preparation
+
+I'm assuming that you would like to extend the functionality of your existing DagLink model. That is, you already have a model `DagLink`.
+```ruby
+class DagLink < ActiveRecord::Base
+  acts_as_dag_links polymorphic: true
+end
+```
 
 In your DagLink model, you'll need an extra column for saving the datetime of deletion.
 ```
@@ -56,6 +63,8 @@ user.links_as_child.in_the_past.count # => 1
 user.links_as_child.now_and_in_the_past.count # => 2
 user.links_as_child.at_time( 1.hour.ago ).count # => 0
 ```
+
+You may want to have [a look at this specs](https://github.com/fiedl/acts_as_paranoid_dag/blob/master/spec/acts_as_paranoid_dag/model_additions_spec.rb).
 
 ## Contributing
 
