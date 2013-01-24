@@ -62,6 +62,11 @@ user.links_as_child.now.count # => 1
 user.links_as_child.in_the_past.count # => 1
 user.links_as_child.now_and_in_the_past.count # => 2
 user.links_as_child.at_time( 1.hour.ago ).count # => 0
+
+# deleting links
+link = user.links_as_child.now.first
+link.destroy # mark this link as deleted, but leave it in the database
+link.destroy! # really delete the link from the database
 ```
 
 You may want to have [a look at this specs](https://github.com/fiedl/acts_as_paranoid_dag/blob/master/spec/acts_as_paranoid_dag/model_additions_spec.rb).

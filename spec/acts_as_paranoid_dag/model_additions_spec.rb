@@ -103,6 +103,39 @@ describe ActsAsParanoidDag do
 
     end
 
+    describe "#destroy" do
+      before do
+        @user.parent_groups << @group
+        @link = @user.links_as_child.first
+      end
+      subject { @link.destroy }
+      it "should mark the link as deleted rather than really destroying it" do
+        @link.deleted_at.should == nil
+        subject
+        @link.deleted_at.should_not == nil
+        @user.links_as_child.count.should == 0
+        @user.links_as_child.now_and_in_the_past.count.should == 1
+        @user.parents.count.should == 0
+      end
+    end
+
+    describe "#destroy!" do #really delete!
+      before do
+        @user.parent_groups << @group
+        @link = @user.links_as_child.first
+      end
+      subject { @link.destroy! }
+      it "should mark the link as deleted rather than really destroying it" do
+        @link.deleted_at.should == nil
+        subject
+        @user.links_as_child.count.should == 0
+        @user.links_as_child.now_and_in_the_past.count.should == 0
+        @user.parents.count.should == 0
+        DagLink.all.count.should == 0
+        DagLink.with_deleted.all.count.should == 0
+      end
+    end
+
   end
 
 
