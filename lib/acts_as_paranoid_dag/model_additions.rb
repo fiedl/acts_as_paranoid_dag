@@ -4,18 +4,19 @@ module ActsAsParanoidDag
 
     # This allows you to make your dag paranoid, meaning that connections are not destroyed, 
     # but instead a 'deleted_at' attribute is set.
+    #
     # In your DagLink model replace
-    # ```
-    # class DagLink < ActiveRecord::Base
-    #   acts_as_dag_links options
-    # end
-    #```
+    # 
+    #     class DagLink < ActiveRecord::Base
+    #       acts_as_dag_links options
+    #     end
+    #
     # by
-    # ```
-    # class DagLink < ActiveRecord::Base
-    #   acts_as_dag_links options, paranoid: true
-    # end
-    #```
+    #
+    #     class DagLink < ActiveRecord::Base
+    #       acts_as_dag_links options, paranoid: true
+    #     end
+    #
     def acts_as_dag_links( params )
 
       # Find out whether the dag link should have the paranoid extension.
@@ -53,6 +54,12 @@ module ActsAsParanoidDag
 
     module DagLinkInstanceMethods
       # here the new instance methods for the DagLink model.
+      
+      # This is just an alias for the +destroy!+ method.
+      #
+      def destroy_permanently
+        self.destroy!  # This method is defined in the rails3_acts_as_paranoid gem.
+      end
     end
 
 

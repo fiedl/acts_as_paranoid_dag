@@ -65,9 +65,12 @@ user.links_as_child.at_time( 1.hour.ago ).count # => 0
 
 # deleting links
 link = user.links_as_child.now.first
-link.destroy # mark this link as deleted, but leave it in the database
-link.destroy! # really delete the link from the database
+link.destroy  # mark this link as deleted, but leave it in the database
+link.destroy!  # really delete the link from the database
+link.destroy_permanently  # same as destroy!
 ```
+
+(You don't need to call `destroy` before calling `destroy_permanently` or `destroy!`, but you can.)
 
 You may want to have [a look at these specs](https://github.com/fiedl/acts_as_paranoid_dag/blob/master/spec/acts_as_paranoid_dag/model_additions_spec.rb).
 
