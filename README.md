@@ -1,5 +1,14 @@
 # ActsAsParanoidDag  [![Build Status](https://secure.travis-ci.org/fiedl/acts_as_paranoid_dag.png?branch=master)](http://travis-ci.org/fiedl/acts_as_paranoid_dag)
 
+----
+
+**WARNING: THIS GEM DOES NOT WORK AS EXPECTED. DO NOT USE IT.** 
+
+There are some issues concerning the `count` of indirect links, which could make the dag unusable. We're currently investigating possible solutions.
+
+----
+
+
 **acts_as_paranoid_dag** is a **ruby on rails gem** that combines the gems [acts-as-dag](https://github.com/resgraph/acts-as-dag) and [rails3_acts_as_paranoid](https://github.com/goncalossilva/rails3_acts_as_paranoid) to order model instances in a polymorphic directed acyclic graph and to be able to retrieve connections deleted in the past.
 
 For example, I'm using this to have a user-group structure, where I can query for group memberships deleted in the past.
